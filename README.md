@@ -4,39 +4,40 @@
 
 ### Exercises
 
-#### [Solution for phonebook-backend(final)](https://github.com/aiotrope/phonebook-backend/tree/main/part3/phonebook-backend)
+#### [Solution for phonebook-backend(final)](https://github.com/aiotrope/phonebook-backend)
 
 ##### Related branches
 
-- [Solution for Exercise 3.1](https://github.com/aiotrope/phonebook-backend/tree/part3/3.1/part3/phonebook-backend)
-- [Solution for Exercise 3.2](https://github.com/aiotrope/phonebook-backend/tree/part3/3.2/part3/phonebook-backend)
-- [Solution for Exercise 3.3](https://github.com/aiotrope/phonebook-backend/tree/part3/3.3/part3/phonebook-backend)
-- [Solution for Exercise 3.4](https://github.com/aiotrope/phonebook-backend/tree/part3/3.4/part3/phonebook-backend)
-- [Solution for Exercise 3.5](https://github.com/aiotrope/phonebook-backend/tree/part3/3.5/part3/phonebook-backend)
+- [Solution for Exercise 3.1](https://github.com/aiotrope/phonebook-backend/tree/3.1)
+- [Solution for Exercise 3.2](https://github.com/aiotrope/phonebook-backend/tree/3.2)
+- [Solution for Exercise 3.3](https://github.com/aiotrope/phonebook-backend/tree/3.3)
+- [Solution for Exercise 3.4](https://github.com/aiotrope/phonebook-backend/tree/3.4)
+- [Solution for Exercise 3.5](https://github.com/aiotrope/phonebook-backend/tree/3.5)
+- [Solution for Exercise 3.6](https://github.com/aiotrope/phonebook-backend/tree/3.6)
 
 ###### Exercise instruction link
 - [3.1-3.6](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-1-3-6)
 
 ##### Related branches
 
-- [Solution for Exercise 3.7](https://github.com/aiotrope/phonebook-backend/tree/part3/3.7/part3/phonebook-backend)
-- [Solution for Exercise 3.8](https://github.com/aiotrope/phonebook-backend/tree/part3/3.8/part3/phonebook-backend)
+- [Solution for Exercise 3.7](https://github.com/aiotrope/phonebook-backend/tree/3.7)
+- [Solution for Exercise 3.8](https://github.com/aiotrope/phonebook-backend/tree/3.8)
 
 ###### Exercise instruction link
 - [3.7-3.8]https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-7-3-8)
 
 ##### Related branches
 
-- [Solution for Exercise 3.9](https://github.com/aiotrope/phonebook-backend/tree/part3/3.19/part3/phonebook-backend)
-- [Solution for Exercise 3.10](https://github.com/aiotrope/phonebook-backend/tree/part3/3.10/part3/phonebook-backend) 
-- [Solution for Exercise 3.11](https://github.com/aiotrope/phonebook-backend/tree/part3/2.13/part3/phonebook-backend) 
+- [Solution for Exercise 3.9](https://github.com/aiotrope/phonebook-backend/tree/3.9)
+- [Solution for Exercise 3.10](https://github.com/aiotrope/phonebook-backend/tree/3.10) 
+- [Solution for Exercise 3.11](https://github.com/aiotrope/phonebook-backend/tree/3.11) 
 
 ###### Exercise instruction link
 - [3.9-3.11](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11)
 
 ##### Related branches
 
-- [Solution for Exercise 3.12](https://github.com/aiotrope/phonebook-backend/tree/part3/3.12/part3/phonebook-backend)
+- [Solution for Exercise 3.12](https://github.com/aiotrope/phonebook-backend/tree/3.12)
 
 ###### Exercise instruction link
 - [3.12]https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12)
