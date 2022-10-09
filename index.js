@@ -2,6 +2,8 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: 1,
@@ -50,6 +52,35 @@ app.delete("/api/persons/:id", (req, res) => {
   persons = persons.filter((person) => person.id !== id);
 
   const response = person ? res.status(204).end() : res.json(persons);
+});
+
+app.post("/api/persons", (req, res) => {
+  // random ID generator based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+  const generateId = () => {
+    let min = persons.length;
+    return Math.ceil(Math.random() * (min - min) + min + 1);
+  };
+
+  const { name, number, id } = req.body;
+
+  if (!name) {
+    return res
+      .status(400)
+      .json({ error: `name field is required - HTTP ${res.statusCode}` });
+  } else if (!number) {
+    return res
+      .status(400)
+      .json({ error: `number field is required - HTTP ${res.statusCode}` });
+  }
+
+  const person = {
+    id: generateId(),
+    name: name,
+    number: number,
+  };
+
+  persons = persons.concat(person);
+  res.json(person);
 });
 
 const Port = 3001;
