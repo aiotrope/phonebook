@@ -11,7 +11,7 @@
 - [Solution for Exercise 3.1](https://github.com/aiotrope/phonebook-backend/tree/part3/3.1/part3/phonebook-backend)
 - [Solution for Exercise 3.2](https://github.com/aiotrope/phonebook-backend/tree/part3/3.2/part3/phonebook-backend)
 - [Solution for Exercise 3.3](https://github.com/aiotrope/phonebook-backend/tree/part3/3.3/part3/phonebook-backend)
-- [[Solution for Exercise 3.4](https://github.com/aiotrope/phonebook-backend/tree/part3/3.4/part3/phonebook-backend)
+- [Solution for Exercise 3.4](https://github.com/aiotrope/phonebook-backend/tree/part3/3.4/part3/phonebook-backend)
 - [Solution for Exercise 3.5](https://github.com/aiotrope/phonebook-backend/tree/part3/3.5/part3/phonebook-backend)
 
 ###### Exercise instruction link
