@@ -2,10 +2,6 @@ const express = require("express");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("<h1>Hello, World!</h1>");
-});
-
 let persons = [
   {
     id: 1,
@@ -31,6 +27,12 @@ let persons = [
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.get("/info", (req, res) => {
+  const personsCount = persons.length;
+
+  res.send(`<p>Phonebook has info for ${personsCount} people</p>${new Date()}`);
 });
 
 const Port = 3001;
