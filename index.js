@@ -4,7 +4,16 @@ const morgan = require("morgan");
 const app = express();
 
 app.use(express.json());
-app.use(morgan("tiny"));
+//app.use(morgan("tiny"));
+
+// log the request/response body on the console
+morgan.token("reqBody", (req, res) => JSON.stringify(req.body));
+// format the log
+app.use(
+  morgan(
+    ":method :url :status :req[content-length] - :response-time ms :reqBody"
+  )
+);
 
 let persons = [
   {
@@ -89,7 +98,7 @@ app.post("/api/persons", (req, res) => {
   };
 
   persons = persons.concat(person);
-  res.status(201).json({ new_entry: person });
+  res.status(200).json({ new_entry: person });
 });
 
 const Port = 3001;
