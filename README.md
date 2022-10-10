@@ -1,4 +1,4 @@
-# phonebook-backend
+# phonebook
 
 ## Part3: Programming a server with NodeJS and Express
 
