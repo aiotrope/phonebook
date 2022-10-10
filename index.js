@@ -1,19 +1,20 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
-//app.use(morgan("tiny"));
 
-// log the request/response body on the console
 morgan.token("reqBody", (req, res) => JSON.stringify(req.body));
-// format the log
+
 app.use(
   morgan(
     ":method :url :status :req[content-length] - :response-time ms :reqBody"
   )
 );
+
+app.use(cors());
 
 let persons = [
   {
@@ -66,9 +67,6 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  /* random ID generator based on
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-   */
   const generateId = () => {
     let min = persons.length;
     return Math.ceil(Math.random() * (min - min) + min + 1);
@@ -101,7 +99,7 @@ app.post("/api/persons", (req, res) => {
   res.status(200).json({ new_entry: person });
 });
 
-const Port = 3001;
+const Port = process.env.Port || 3001;
 app.listen(Port, () => {
   console.log(`Server running on port ${Port}`);
 });
