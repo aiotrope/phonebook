@@ -61,13 +61,13 @@ app.post("/api/persons", (req, res) => {
     return Math.ceil(Math.random() * (min - min) + min + 1);
   };
 
-  const { name, number, id } = req.body;
+  const body = req.body;
 
-  if (!name) {
+  if (!body.name) {
     return res
       .status(400)
       .json({ error: `name field is required - HTTP ${res.statusCode}` });
-  } else if (!number) {
+  } else if (!body.number) {
     return res
       .status(400)
       .json({ error: `number field is required - HTTP ${res.statusCode}` });
@@ -75,8 +75,8 @@ app.post("/api/persons", (req, res) => {
 
   const person = {
     id: generateId(),
-    name: name,
-    number: number,
+    name: body.name,
+    number: body.number,
   };
 
   persons = persons.concat(person);
