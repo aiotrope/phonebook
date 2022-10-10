@@ -55,13 +55,18 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  // random ID generator based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+  /* random ID generator based on
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+   */
   const generateId = () => {
     let min = persons.length;
     return Math.ceil(Math.random() * (min - min) + min + 1);
   };
 
   const { name, number, id } = req.body;
+
+  const nameArr = persons.map((p) => p.name);
+  const nameDuplicate = nameArr.includes(name);
 
   if (!name) {
     return res
@@ -71,6 +76,8 @@ app.post("/api/persons", (req, res) => {
     return res
       .status(400)
       .json({ error: `number field is required - HTTP ${res.statusCode}` });
+  } else if (nameDuplicate) {
+    return res.status(400).json({ error: "name must be unique" });
   }
 
   const person = {
