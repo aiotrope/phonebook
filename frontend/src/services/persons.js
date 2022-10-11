@@ -18,4 +18,11 @@ const update = (id, personObject) => {
   return axios.put(`${baseURL}/api/persons/${id}`, personObject);
 };
 
-export default { getAll, create, omit, update };
+const personsService = {
+  getAll,
+  create,
+  omit,
+  update,
+};
+
+export default personsService;

@@ -19,7 +19,7 @@ const Filter = ({ search, setSearch }) => {
 };
 
 const DeleteButton = ({ id, setPersons, targetName }) => {
-  const [count, setCount] = useState(0); // for triggering update of state only
+  const [count, setCount] = useState(0); // for triggering state only
 
   useEffect(() => {
     // get all name/number entries
