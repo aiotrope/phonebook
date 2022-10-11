@@ -36,10 +36,10 @@ const DeleteButton = ({ id, setPersons, targetName }) => {
   const onClick = (event) => {
     const target = event.target.value;
     //console.log(target);
-
     const confirm = window.confirm(`Delete ${targetName}?`);
     console.log(confirm);
-    if (confirm)
+
+    if (confirm) {
       personsService
         .omit(target)
         .then((returedPerson) => {
@@ -50,6 +50,7 @@ const DeleteButton = ({ id, setPersons, targetName }) => {
           console.log(e.message);
           alert(`Problem deleting resource: ${e.message}`);
         });
+    }
   };
 
   return (
@@ -126,9 +127,9 @@ const PersonForm = ({
       alert("You forgot to enter your name!");
     } else if (newNumber.length === 0) {
       alert("You forgot to enter your phone number!");
-    } else if(haveMatch) {
+    } else if (haveMatch) {
       alert(`${newName} is already added to phonebook`);
-    }else {
+    } else {
       // post new entries on the backend
       const newEntry = { name: newName, number: newNumber };
 
@@ -146,9 +147,9 @@ const PersonForm = ({
         })
         .catch((error) => {
           alert(`${error.response.data.error}`); // error response from the server
-          if(error.response) {
+          if (error.response) {
             //console.log(error.response.statusText)
-            console.log(error.message)
+            console.log(error.message);
           }
         });
     }
