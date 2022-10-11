@@ -46,7 +46,7 @@ app.get("/api/persons", (req, res) => {
 app.get("/info", (req, res) => {
   const personsCount = persons.length;
 
-  res.send(`<p>Phonebook has info for ${personsCount} people</p>${new Date()}`);
+  res.send(`<p>Phonebook has info for ${personsCount} people <p/>${new Date()}`);
 });
 
 app.get("/api/persons/:id", (req, res) => {
@@ -72,31 +72,33 @@ app.post("/api/persons", (req, res) => {
     return Math.ceil(Math.random() * (min - min) + min + 1);
   };
 
-  const { name, number, id } = req.body;
+  const body = req.body;
+
+  console.log(req.body.name)
 
   const nameArr = persons.map((p) => p.name);
-  const nameDuplicate = nameArr.includes(name);
+  const nameDuplicate = nameArr.includes(req.body.name);
 
-  if (!name) {
+  if (!req.body.name) {
     return res
       .status(400)
       .json({ error: `name field is required - HTTP ${res.statusCode}` });
-  } else if (!number) {
+  } else if (!req.body.number) {
     return res
       .status(400)
       .json({ error: `number field is required - HTTP ${res.statusCode}` });
   } else if (nameDuplicate) {
     return res.status(400).json({ error: "name must be unique" });
-  }
+  } 
 
   const person = {
     id: generateId(),
-    name: name,
-    number: number,
+    name: req.body.name,
+    number: req.body.number,
   };
 
   persons = persons.concat(person);
-  res.status(200).json({ new_entry: person });
+  res.status(201).json({ new_person: person });
 });
 
 const Port = process.env.Port || 3001;
