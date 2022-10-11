@@ -3,19 +3,19 @@ import axios from "axios";
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 const getAll = () => {
-  return axios.get(`${baseURL}/api/persons`);
+  return axios.get(baseURL);
 };
 
 const create = (personObject) => {
-  return axios.post(`${baseURL}/api/persons`, personObject);
+  return axios.post(baseURL, personObject);
 };
 
 const omit = (id) => {
-  return axios.delete(`${baseURL}/api/persons/${id}`);
+  return axios.delete(`${baseURL}/${id}`);
 };
 
 const update = (id, personObject) => {
-  return axios.put(`${baseURL}/api/persons/${id}`, personObject);
+  return axios.put(`${baseURL}/${id}`, personObject);
 };
 
 const personsService = {
