@@ -1,18 +1,36 @@
 const express = require("express");
-const morgan = require("morgan");
+const logger = require("morgan");
 
 const app = express();
 
 app.use(express.json());
-//app.use(morgan("tiny"));
 
-// log the request/response body on the console
-morgan.token("reqBody", (req, res) => JSON.stringify(req.body));
-// format the log
+logger.token("reqBody", (req, res) => JSON.stringify(req.body));
+
 app.use(
-  morgan(
-    ":method :url :status :req[content-length] - :response-time ms :reqBody"
-  )
+  logger(function (tokens, req, res) {
+    if (req.method === "POST") {
+      return [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.req(req, res, "content-length"),
+        "-",
+        tokens["response-time"](req, res),
+        "ms",
+        tokens["reqBody"](req, res, JSON.stringify(req.body)),
+      ].join(" ");
+    }
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.req(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+    ].join(" ");
+  })
 );
 
 let persons = [
@@ -38,6 +56,11 @@ let persons = [
   },
 ];
 
+const generateId = () => {
+  let min = persons.length;
+  return Math.ceil(Math.random() * (min - min) + min + 1);
+};
+
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
@@ -52,32 +75,23 @@ app.get("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   const person = persons.find((person) => person.id === id);
   //console.log(id)
-  const response = person ? res.json(person) : res.status(404).end();
+  const response = person
+    ? res.json(person)
+    : res.status(404).json({ error: `person with ID ${id} is not found` });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
-
   const person = persons.find((person) => person.id === id);
-
   persons = persons.filter((person) => person.id !== id);
 
   const response = person ? res.status(204).end() : res.json(persons);
 });
 
 app.post("/api/persons", (req, res) => {
-  /* random ID generator based on
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-   */
-  const generateId = () => {
-    let min = persons.length;
-    return Math.ceil(Math.random() * (min - min) + min + 1);
-  };
-
   const { name, number, id } = req.body;
-
   const nameArr = persons.map((p) => p.name);
-  const nameDuplicate = nameArr.includes(name);
+  const duplicateName = nameArr.includes(name);
 
   if (!name) {
     return res
@@ -87,7 +101,7 @@ app.post("/api/persons", (req, res) => {
     return res
       .status(400)
       .json({ error: `number field is required - HTTP ${res.statusCode}` });
-  } else if (nameDuplicate) {
+  } else if (duplicateName) {
     return res.status(400).json({ error: "name must be unique" });
   }
 
