@@ -9,6 +9,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build:frontend": "rm -rf build && cd frontend && rm -rf build && npm run build:prod && cp -r build ../",
+    "deploy": "git push heroku main",
+    "logs": "heroku logs --tail"
   }
 }
