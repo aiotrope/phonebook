@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = "http://127.0.0.1:3001/api/persons"
 
 const getAll = () => {
   return axios.get(baseURL);
