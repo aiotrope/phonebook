@@ -1,6 +1,8 @@
 # phonebook-backend
 
-__Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp.com)
+Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
+
+**Live site:** [https://annuaire.cyclic.app/](https://annuaire.cyclic.app/)
 
 ## Part3: Programming a server with NodeJS and Express
 
@@ -18,6 +20,7 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.6](https://github.com/aiotrope/phonebook-backend/tree/3.6)
 
 ###### Exercise instruction link
+
 - [3.1-3.6](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-1-3-6)
 
 ##### Related branches
@@ -26,15 +29,17 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.8](https://github.com/aiotrope/phonebook-backend/tree/3.8)
 
 ###### Exercise instruction link
+
 - [3.7-3.8]https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-7-3-8)
 
 ##### Related branches
 
 - [Solution for Exercise 3.9](https://github.com/aiotrope/phonebook-backend/tree/3.9)
-- [Solution for Exercise 3.10](https://github.com/aiotrope/phonebook-backend/tree/3.10) 
-- [Solution for Exercise 3.11](https://github.com/aiotrope/phonebook-backend/tree/3.11) 
+- [Solution for Exercise 3.10](https://github.com/aiotrope/phonebook-backend/tree/3.10)
+- [Solution for Exercise 3.11](https://github.com/aiotrope/phonebook-backend/tree/3.11)
 
 ###### Exercise instruction link
+
 - [3.9-3.11](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11)
 
 ##### Related branches
@@ -42,6 +47,7 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.12](https://github.com/aiotrope/phonebook-backend/tree/3.12)
 
 ###### Exercise instruction link
+
 - [3.12]https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12)
 
 ##### Related branches
@@ -50,6 +56,7 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.14](https://github.com/aiotrope/phonebook-backend/tree/part3/3.14/part3/phonebook-database)
 
 ###### Exercise instruction link
+
 - [3.13-3.14](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-13-3-14)
 
 ##### Related branches
@@ -60,6 +67,7 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.18](https://github.com/aiotrope/phonebook-backend/tree/part3/3.18/part3/phonebook-database)
 
 ###### Exercise instruction link
+
 - [3.15-3.18](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-15-3-18)
 
 ##### Related branches
@@ -69,6 +77,7 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.21](https://github.com/aiotrope/phonebook-backend/tree/part3/3.21/part3/phonebook-database)
 
 ###### Exercise instruction link
+
 - [3.19-3.21](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21)
 
 ##### Related branches
@@ -76,4 +85,8 @@ __Site link:__ [https://white-lists.herokuapp.com](https://white-lists.herokuapp
 - [Solution for Exercise 3.22](https://github.com/aiotrope/phonebook-backend/tree/part3/3.22/part3/phonebook-database)
 
 ###### Exercise instruction link
+
 - [3.22](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21)
+
+#### Deployment
+This project assignment was deployed in [cyclic.sh](https://docs.cyclic.sh/). 
