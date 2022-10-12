@@ -1,5 +1,8 @@
 # phonebook-backend
 
-**Site link:** [https://white-lists.herokuapp.com](https://white-lists.herokuapp.com)
+Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
-## Part3: Programming a server with NodeJS and Express
+**Live site:** [https://annuaire.cyclic.app/](https://annuaire.cyclic.app/)
+
+#### Deployment
+This project assignment was deployed in [cyclic.sh](https://docs.cyclic.sh/). 
