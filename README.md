@@ -8,4 +8,4 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 #### Deployment
 
-This project assignment was deployed in [cyclic.sh](https://docs.cyclic.sh/).
+Fullstack MERN exercise hosted in [cyclic.sh](https://docs.cyclic.sh/).
