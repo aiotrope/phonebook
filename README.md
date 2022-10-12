@@ -89,4 +89,4 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 - [3.22](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21)
 
 #### Deployment
-Project assignment hosted in [cyclic.sh](https://docs.cyclic.sh/). 
+Fullstack MERN exercise hosted in [cyclic.sh](https://docs.cyclic.sh/).
