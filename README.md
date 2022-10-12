@@ -30,7 +30,7 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 ###### Exercise instruction link
 
-- [3.7-3.8]https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-7-3-8)
+- [3.7-3.8](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-7-3-8)
 
 ##### Related branches
 
@@ -48,7 +48,7 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 ###### Exercise instruction link
 
-- [3.12]https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12)
+- [3.12](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12)
 
 ##### Related branches
 
@@ -89,4 +89,4 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 - [3.22](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21)
 
 #### Deployment
-This project assignment was deployed in [cyclic.sh](https://docs.cyclic.sh/). 
+Project assignment hosted in [cyclic.sh](https://docs.cyclic.sh/). 
