@@ -6,8 +6,6 @@ const PersonModel = require("./models/person");
 
 const app = express();
 
-app.use(express.static("build"));
-
 app.use(express.json());
 
 logger.token("reqBody", (req, res) => JSON.stringify(req.body));
@@ -40,26 +38,30 @@ app.use(
 
 app.use(cors());
 
-app.get("/api/persons", (req, res) => {
-  PersonModel.find({}).then((persons) => {
-    res.json(persons);
-  });
+app.use(express.static("build"));
+
+app.get("/api/persons", (req, res, next) => {
+  PersonModel.find({})
+    .then((persons) => {
+      res.json(persons);
+    })
+    .catch((error) => next(error));
 });
 
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
-  PersonModel.findById({ _id: id })
-    .then((person) => {
-      person.remove();
-      res.status(204).json({ message: `${id} deleted` });
+  PersonModel.findByIdAndRemove(id)
+    .then(() => {
+      res.status(204).end();
     })
-    .catch((err) => {
+    .catch((error) => {
       console.log(err.message);
+      next(error);
     });
 });
 
-app.post("/api/persons", (req, res) => {
-  const { name, number, idx } = req.body;
+app.post("/api/persons", (req, res, next) => {
+  const { name, number } = req.body;
   if (!name) {
     return res
       .status(400)
@@ -73,12 +75,32 @@ app.post("/api/persons", (req, res) => {
       name: req.body.name,
       number: req.body.number,
     });
-    person.save().then((newPerson) => {
-      console.log(newPerson);
-      res.status(201).json({ new_person: newPerson });
-    });
+    person
+      .save()
+      .then((newPerson) => {
+        console.log(newPerson);
+        res.status(201).json({ new_person: newPerson });
+      })
+      .catch((error) => next(error));
   }
 });
+
+const notFoundEndpoint = (req, res) => {
+  res.status(404).send({ error: "endpoint not found" });
+};
+
+app.use(notFoundEndpoint);
+
+const errorHandler = (err, req, res, next) => {
+  console.log(err.message);
+  console.error(err.stack);
+  res.status(500);
+  res.send("error", { error: err });
+
+  next(err);
+};
+
+app.use(errorHandler);
 
 const port = config.port;
 app.listen(port, () => {
