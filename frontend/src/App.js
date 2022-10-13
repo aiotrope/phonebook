@@ -101,61 +101,8 @@ const PersonForm = ({
   );
 };
 
-const DeleteButton = ({ id, setPersons, targetName }) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    personsService
-      .getAll()
-      .then((res) => {
-        const init = res.data;
-        //console.log(init);
-        setPersons(init);
-      })
-      .catch((e) => console.log(e.message));
-  }, [count, setPersons]);
-
-  const onClick = (event) => {
-    const target = event.target.value;
-    //console.log(target);
-    const confirm = window.confirm(`Delete ${targetName}?`);
-    console.log(confirm);
-
-    if (confirm) {
-      personsService
-        .omit(target)
-        .then((returedPerson) => {
-          setCount((c) => c + 1);
-          //console.log(returedPerson);
-        })
-        .catch((e) => {
-          console.log(e.message);
-          alert(`Problem deleting resource: ${e.message}`);
-        });
-    }
-  };
-
-  return (
-    <button value={id} onClick={onClick} className="button">
-      delete
-    </button>
-  );
-};
-
 const Persons = ({ persons, setPersons, search }) => {
   const [count, setCount] = useState(0);
-
-  /* useEffect(() => {
-    personsService
-      .getAll()
-      .then((res) => {
-        const init = res.data;
-        //console.log(init);
-        setPersons(init);
-      })
-      .catch((e) => console.log(e.message));
-  }, [setPersons]);
-  console.log(persons); */
 
   useEffect(() => {
     personsService
@@ -197,9 +144,9 @@ const Persons = ({ persons, setPersons, search }) => {
         .filter((elem) =>
           elem.name.toUpperCase().includes(search.toUpperCase())
         )
-        .map((person) => {
-          return [
-            <div key={person._id}>
+        .map((person, idx) => {
+          return (
+            <div key={idx}>
               {person.name} {person.number}
               <button
                 value={person._id}
@@ -209,8 +156,8 @@ const Persons = ({ persons, setPersons, search }) => {
               >
                 delete
               </button>
-            </div>,
-          ];
+            </div>
+          );
         })}
     </>
   );
@@ -236,9 +183,8 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <div>
-        <Persons persons={persons} setPersons={setPersons} search={search} />
-      </div>
+
+      <Persons persons={persons} setPersons={setPersons} search={search} />
     </div>
   );
 };
