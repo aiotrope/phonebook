@@ -52,8 +52,8 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 ##### Related branches
 
-- [Solution for Exercise 3.13](https://github.com/aiotrope/phonebook-backend/tree/part3/3.13/part3/phonebook-database)
-- [Solution for Exercise 3.14](https://github.com/aiotrope/phonebook-backend/tree/part3/3.14/part3/phonebook-database)
+- [Solution for Exercise 3.13](https://github.com/aiotrope/phonebook-backend/tree/3.13)
+- [Solution for Exercise 3.14](https://github.com/aiotrope/phonebook-backend/tree/3.14)
 
 ###### Exercise instruction link
 
@@ -61,10 +61,10 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 ##### Related branches
 
-- [Solution for Exercise 3.15](https://github.com/aiotrope/phonebook-backend/tree/part3/3.15/part3/phonebook-database)
-- [Solution for Exercise 3.16](https://github.com/aiotrope/phonebook-backend/tree/part3/3.16/part3/phonebook-database)
-- [Solution for Exercise 3.17](https://github.com/aiotrope/phonebook-backend/tree/part3/3.17/part3/phonebook-database)
-- [Solution for Exercise 3.18](https://github.com/aiotrope/phonebook-backend/tree/part3/3.18/part3/phonebook-database)
+- [Solution for Exercise 3.15](https://github.com/aiotrope/phonebook-backend/tree/3.15)
+- [Solution for Exercise 3.16](https://github.com/aiotrope/phonebook-backend/tree/3.16)
+- [Solution for Exercise 3.17](https://github.com/aiotrope/phonebook-backend/tree/3.17)
+- [Solution for Exercise 3.18](https://github.com/aiotrope/phonebook-backend/tree/3.18)
 
 ###### Exercise instruction link
 
@@ -72,9 +72,9 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 ##### Related branches
 
-- [Solution for Exercise 3.19](https://github.com/aiotrope/phonebook-backend/tree/part3/3.19/part3/phonebook-database)
-- [Solution for Exercise 3.20](https://github.com/aiotrope/phonebook-backend/tree/part3/3.20/part3/phonebook-database)
-- [Solution for Exercise 3.21](https://github.com/aiotrope/phonebook-backend/tree/part3/3.21/part3/phonebook-database)
+- [Solution for Exercise 3.19](https://github.com/aiotrope/phonebook-backend/tree/3.19)
+- [Solution for Exercise 3.20](https://github.com/aiotrope/phonebook-backend/tree/3.20)
+- [Solution for Exercise 3.21](https://github.com/aiotrope/phonebook-backend/tree/3.21)
 
 ###### Exercise instruction link
 
@@ -82,7 +82,7 @@ Maintained by: [Arnel Imperial](https://github.com/aiotrope/)
 
 ##### Related branches
 
-- [Solution for Exercise 3.22](https://github.com/aiotrope/phonebook-backend/tree/part3/3.22/part3/phonebook-database)
+- [Solution for Exercise 3.22](https://github.com/aiotrope/phonebook-backend/tree/3.22)
 
 ###### Exercise instruction link
 
