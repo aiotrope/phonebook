@@ -1,7 +1,8 @@
+const config = require("./config");
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-const config = require("./config");
+const PersonModel = require("./models/person");
 
 const app = express();
 
@@ -39,71 +40,26 @@ app.use(cors());
 
 app.use(express.static("build"));
 
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
-
-const generateId = () => {
-  let min = persons.length;
-  return Math.ceil(Math.random() * (min - min) + min + 1);
-};
-
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
-});
-
-app.get("/info", (req, res) => {
-  const personsCount = persons.length;
-
-  res.send(
-    `<p>Phonebook has info for ${personsCount} people <p/>${new Date()}`
-  );
-});
-
-app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((person) => person.id === id);
-  //console.log(id)
-  const response = person
-    ? res.json(person)
-    : res.status(404).json({ error: `person with ID ${id} is not found` });
+  PersonModel.find({}).then((persons) => {
+    res.json(persons);
+  });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((person) => person.id === id);
-  persons = persons.filter((person) => person.id !== id);
-
-  const response = person ? res.status(204).end() : res.json(persons);
+  const id = req.params.id;
+  PersonModel.findById({ _id: id })
+    .then((person) => {
+      person.remove();
+      res.status(204).json({ message: `${id} deleted` });
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 });
 
 app.post("/api/persons", (req, res) => {
-  const { name, number, id } = req.body;
-  // like also req.body.name etc...
-  //console.log(name);
-
-  const nameArr = persons.map((p) => p.name);
-  const nameDuplicate = nameArr.includes(req.body.name);
-
+  const { name, number, idx } = req.body;
   if (!name) {
     return res
       .status(400)
@@ -112,18 +68,16 @@ app.post("/api/persons", (req, res) => {
     return res
       .status(400)
       .json({ error: `number field is required - HTTP ${res.statusCode}` });
-  } else if (nameDuplicate) {
-    return res.status(400).json({ error: "name must be unique" });
+  } else {
+    const person = new PersonModel({
+      name: req.body.name,
+      number: req.body.number,
+    });
+    person.save().then((newPerson) => {
+      console.log(newPerson);
+      res.status(201).json({ new_person: newPerson });
+    });
   }
-
-  const person = {
-    id: generateId(),
-    name: req.body.name,
-    number: req.body.number,
-  };
-
-  persons = persons.concat(person);
-  res.status(201).json({ new_person: person });
 });
 
 const port = config.port;

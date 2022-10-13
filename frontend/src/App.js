@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import personsService from "./services/persons"; // services
+import personsService from "./services/persons";
 import "./styles.css";
 
 const Filter = ({ search, setSearch }) => {
@@ -18,85 +18,6 @@ const Filter = ({ search, setSearch }) => {
   );
 };
 
-const DeleteButton = ({ id, setPersons, targetName }) => {
-  const [count, setCount] = useState(0); // for triggering state only
-
-  useEffect(() => {
-    // get all name/number entries
-    personsService
-      .getAll()
-      .then((res) => {
-        const init = res.data;
-        //console.log(init);
-        setPersons(init);
-      })
-      .catch((e) => console.log(e.message));
-  }, [count, setPersons]);
-
-  const onClick = (event) => {
-    const target = event.target.value;
-    //console.log(target);
-    const confirm = window.confirm(`Delete ${targetName}?`);
-    console.log(confirm);
-
-    if (confirm) {
-      personsService
-        .omit(target)
-        .then((returedPerson) => {
-          setCount((c) => c + 1);
-          //console.log(returedPerson.data);
-        })
-        .catch((e) => {
-          console.log(e.message);
-          alert(`Problem deleting resource: ${e.message}`);
-        });
-    }
-  };
-
-  return (
-    <>
-      <button value={id} onClick={onClick} className="button">
-        delete
-      </button>
-    </>
-  );
-};
-
-const Persons = ({ persons, search, setPersons }) => {
-  useEffect(() => {
-    // get all name/number entries
-    personsService
-      .getAll()
-      .then((res) => {
-        const init = res.data;
-        console.log(init);
-        setPersons(init);
-      })
-      .catch((e) => console.log(e.message));
-  }, [setPersons]);
-  return (
-    <>
-      {persons
-        .filter((person) =>
-          person.name.toUpperCase().includes(search.toUpperCase())
-        )
-        .map((el, index) => {
-          return (
-            <div key={index}>
-              {el.name} {el.number}{" "}
-              <DeleteButton
-                id={el.id}
-                targetName={el.name}
-                persons={persons}
-                setPersons={setPersons}
-              />
-            </div>
-          );
-        })}
-    </>
-  );
-};
-
 const PersonForm = ({
   persons,
   setPersons,
@@ -104,7 +25,6 @@ const PersonForm = ({
   setNewName,
   newNumber,
   setNewNumber,
-  setSuccessMsg,
 }) => {
   const onChangeName = (event) => {
     event.persist();
@@ -136,14 +56,8 @@ const PersonForm = ({
       personsService
         .create(newEntry)
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
           setPersons(persons.concat(newEntry));
-          if (response.status === 201) {
-            setSuccessMsg(`Added ${newName}`);
-            setTimeout(() => {
-              setSuccessMsg(null);
-            }, 5000);
-          }
         })
         .catch((error) => {
           alert(`${error.response.data.error}`); // error response from the server
@@ -153,7 +67,6 @@ const PersonForm = ({
           }
         });
     }
-
     setNewName("");
     setNewNumber("");
   };
@@ -188,23 +101,130 @@ const PersonForm = ({
   );
 };
 
+const DeleteButton = ({ id, setPersons, targetName }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    personsService
+      .getAll()
+      .then((res) => {
+        const init = res.data;
+        //console.log(init);
+        setPersons(init);
+      })
+      .catch((e) => console.log(e.message));
+  }, [count, setPersons]);
+
+  const onClick = (event) => {
+    const target = event.target.value;
+    //console.log(target);
+    const confirm = window.confirm(`Delete ${targetName}?`);
+    console.log(confirm);
+
+    if (confirm) {
+      personsService
+        .omit(target)
+        .then((returedPerson) => {
+          setCount((c) => c + 1);
+          //console.log(returedPerson);
+        })
+        .catch((e) => {
+          console.log(e.message);
+          alert(`Problem deleting resource: ${e.message}`);
+        });
+    }
+  };
+
+  return (
+    <button value={id} onClick={onClick} className="button">
+      delete
+    </button>
+  );
+};
+
+const Persons = ({ persons, setPersons, search }) => {
+  const [count, setCount] = useState(0);
+
+  /* useEffect(() => {
+    personsService
+      .getAll()
+      .then((res) => {
+        const init = res.data;
+        //console.log(init);
+        setPersons(init);
+      })
+      .catch((e) => console.log(e.message));
+  }, [setPersons]);
+  console.log(persons); */
+
+  useEffect(() => {
+    personsService
+      .getAll()
+      .then((res) => {
+        const init = res.data;
+        //console.log(init);
+        setPersons(init);
+      })
+      .catch((e) => console.log(e.message));
+  }, [count, setPersons]);
+
+  const onClick = (event) => {
+    const target = event.target.value;
+    const targetName = persons
+      .filter((i) => i._id === target)
+      .map((target) => target.name);
+    //console.log(target);
+    const confirm = window.confirm(`Delete ${targetName}?`);
+    console.log(confirm);
+
+    if (confirm) {
+      personsService
+        .omit(target)
+        .then((returedPerson) => {
+          setCount((c) => c + 1);
+          //console.log(returedPerson);
+        })
+        .catch((e) => {
+          console.log(e.message);
+          alert(`Problem deleting resource: ${e.message}`);
+        });
+    }
+  };
+
+  return (
+    <>
+      {persons
+        .filter((elem) =>
+          elem.name.toUpperCase().includes(search.toUpperCase())
+        )
+        .map((person) => {
+          return [
+            <div key={person._id}>
+              {person.name} {person.number}
+              <button
+                value={person._id}
+                name={person.name}
+                onClick={onClick}
+                className="button"
+              >
+                delete
+              </button>
+            </div>,
+          ];
+        })}
+    </>
+  );
+};
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [search, setSearch] = useState("");
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [search, setSearch] = useState("");
 
   return (
     <div>
       <h2>Phonebook</h2>
-
-      {successMsg && <div className="success">{successMsg}</div>}
-      {errorMsg && <div className="error">{errorMsg}</div>}
-
       <Filter search={search} setSearch={setSearch} />
-
       <h3>Add a new</h3>
       <PersonForm
         newName={newName}
@@ -213,13 +233,12 @@ const App = () => {
         setNewNumber={setNewNumber}
         persons={persons}
         setPersons={setPersons}
-        search={search}
-        setSuccessMsg={setSuccessMsg}
-        setErrorMsg={setErrorMsg}
       />
-      <h3>Numbers</h3>
 
-      <Persons persons={persons} search={search} setPersons={setPersons} />
+      <h3>Numbers</h3>
+      <div>
+        <Persons persons={persons} setPersons={setPersons} search={search} />
+      </div>
     </div>
   );
 };
