@@ -6,6 +6,8 @@ const PersonModel = require("./models/person");
 
 const app = express();
 
+app.use(express.static("build"));
+
 app.use(express.json());
 
 logger.token("reqBody", (req, res) => JSON.stringify(req.body));
@@ -37,8 +39,6 @@ app.use(
 );
 
 app.use(cors());
-
-app.use(express.static("build"));
 
 app.get("/api/persons", (req, res) => {
   PersonModel.find({}).then((persons) => {

@@ -17,13 +17,6 @@ const PersonSchema = new mongoose.Schema({
   number: String,
 });
 
-/* PersonSchema.set("toJSON", {
-  transform: (document, obj) => {
-    obj.id = obj._id.toString();
-    delete obj._id, delete obj.__v;
-  },
-});
- */
 const PersonModel = mongoose.model("PersonModel", PersonSchema);
 
 module.exports = PersonModel;
