@@ -1,7 +1,6 @@
-require('dotenv').config()
-/* const dotenv = require("dotenv");
+const dotenv = require("dotenv");
 
-dotenv.config(); */
+dotenv.config();
 
 const port = process.env.PORT;
 const mongo_username = process.env.MONGO_USERNAME;
