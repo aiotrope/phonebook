@@ -18,6 +18,60 @@ const Filter = ({ search, setSearch }) => {
   );
 };
 
+const Persons = ({ persons, search, setCount, setErrorMsg }) => {
+  const onClick = (event) => {
+    const target = event.target.value;
+    const targetName = event.target.name;
+
+    personsService
+      .omit(target)
+      .then((response) => {
+        if (response.data.message !== null) {
+          const confirm = window.confirm(`Delete ${targetName}?`);
+          if (confirm) {
+            setCount((c) => c + 1);
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        setErrorMsg(
+          `Information of ${targetName} has already been removed from server`
+        );
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          setErrorMsg(null);
+        }, 6000);
+        setCount((c) => c + 1);
+      });
+  };
+
+  return (
+    <>
+      {persons
+        .filter((elem) =>
+          elem.name.toUpperCase().includes(search.toUpperCase())
+        )
+        .map((person, idx) => {
+          return (
+            <div key={idx}>
+              {person.name} {person.number}
+              <button
+                value={person._id}
+                name={person.name}
+                onClick={onClick}
+                className="button"
+              >
+                delete
+              </button>
+            </div>
+          );
+        })}
+    </>
+  );
+};
+
 const PersonForm = ({
   persons,
   setPersons,
@@ -25,6 +79,9 @@ const PersonForm = ({
   setNewName,
   newNumber,
   setNewNumber,
+  setSuccessMsg,
+  setErrorMsg,
+  setCount,
 }) => {
   const onChangeName = (event) => {
     event.persist();
@@ -45,10 +102,48 @@ const PersonForm = ({
 
     if (newName.length === 0) {
       alert("You forgot to enter your name!");
+    } else if (haveMatch) {
+      const targetId = persons
+        .filter((p) => p.name === newName)
+        .map((p) => p._id);
+
+      const updatedEntry = { name: newName, number: newNumber };
+
+      personsService
+        .update(targetId, updatedEntry)
+        .then((response) => {
+          console.log(response);
+
+          if (response.data.update_person !== null) {
+            const confirm = window.confirm(
+              `${newName} is already added to phonebook, replace the old number with a new one?`
+            );
+
+            if (confirm) {
+              setPersons(persons.concat(updatedEntry));
+              setSuccessMsg(`${newName}'s updated phone number: ${newNumber}`);
+              setCount((c) => c + 1);
+              setTimeout(() => {
+                setSuccessMsg(null);
+              }, 5000);
+            }
+          }
+        })
+        .catch((err) => {
+          setErrorMsg(
+            `Information of ${newName} has already been removed from server`
+          );
+          let timer;
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            setErrorMsg(null);
+          }, 6000);
+          setCount((c) => c + 1);
+          console.log(err.message);
+          setPersons(persons.filter((p) => p._id !== targetId));
+        });
     } else if (newNumber.length === 0) {
       alert("You forgot to enter your phone number!");
-    } else if (haveMatch) {
-      alert(`${newName} is already added to phonebook`);
     } else {
       // post new entries on the backend
       const newEntry = { name: newName, number: newNumber };
@@ -56,17 +151,26 @@ const PersonForm = ({
       personsService
         .create(newEntry)
         .then((response) => {
-          console.log(response.data.new_person);
+          console.log(response.status);
           setPersons(persons.concat(newEntry));
+          if (response.status === 201) {
+            setSuccessMsg(`Added ${newName}`);
+            setCount((c) => c + 1);
+            let timer;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              setSuccessMsg(null);
+            }, 6000);
+          }
         })
-        .catch((error) => {
-          alert(`${error.response.data.error}`); // error response from the server
-          if (error.response) {
+        .catch((err) => {
+          if (err.response) {
             //console.log(error.response.statusText)
-            console.log(error.message);
+            console.log(err.message);
           }
         });
     }
+
     setNewName("");
     setNewNumber("");
   };
@@ -101,7 +205,13 @@ const PersonForm = ({
   );
 };
 
-const Persons = ({ persons, setPersons, search }) => {
+const App = () => {
+  const [persons, setPersons] = useState([]);
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [search, setSearch] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -115,64 +225,18 @@ const Persons = ({ persons, setPersons, search }) => {
       .catch((e) => console.log(e.message));
   }, [count, setPersons]);
 
-  const onClick = (event) => {
-    const target = event.target.value;
-    const targetName = persons
-      .filter((i) => i.id === target)
-      .map((target) => target.name);
-    //console.log(target);
-    const confirm = window.confirm(`Delete ${targetName}?`);
-    console.log(confirm);
-
-    if (confirm) {
-      personsService
-        .omit(target)
-        .then((returedPerson) => {
-          setCount((c) => c + 1);
-          //console.log(returedPerson);
-        })
-        .catch((e) => {
-          console.log(e.message);
-          alert(`Problem deleting resource: ${e.message}`);
-        });
-    }
-  };
-
-  return (
-    <>
-      {persons
-        .filter((elem) =>
-          elem.name.toUpperCase().includes(search.toUpperCase())
-        )
-        .map((person, idx) => {
-          return (
-            <div key={idx}>
-              {person.name} {person.number}
-              <button
-                value={person.id}
-                name={person.name}
-                onClick={onClick}
-                className="button"
-              >
-                delete
-              </button>
-            </div>
-          );
-        })}
-    </>
-  );
-};
-const App = () => {
-  const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
-  const [search, setSearch] = useState("");
-
   return (
     <div>
       <h2>Phonebook</h2>
+
+      {successMsg && <div className="success">{successMsg}</div>}
+
+      {errorMsg && <div className="error">{errorMsg}</div>}
+
       <Filter search={search} setSearch={setSearch} />
+
       <h3>Add a new</h3>
+
       <PersonForm
         newName={newName}
         newNumber={newNumber}
@@ -180,11 +244,19 @@ const App = () => {
         setNewNumber={setNewNumber}
         persons={persons}
         setPersons={setPersons}
+        setSuccessMsg={setSuccessMsg}
+        setErrorMsg={setErrorMsg}
+        setCount={setCount}
       />
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} setPersons={setPersons} search={search} />
+      <Persons
+        persons={persons}
+        search={search}
+        setCount={setCount}
+        setErrorMsg={setErrorMsg}
+      />
     </div>
   );
 };
