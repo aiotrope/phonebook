@@ -56,7 +56,7 @@ const PersonForm = ({
       personsService
         .create(newEntry)
         .then((response) => {
-          console.log(response.data);
+          console.log(response.data.new_person);
           setPersons(persons.concat(newEntry));
         })
         .catch((error) => {
@@ -118,7 +118,7 @@ const Persons = ({ persons, setPersons, search }) => {
   const onClick = (event) => {
     const target = event.target.value;
     const targetName = persons
-      .filter((i) => i._id === target)
+      .filter((i) => i.id === target)
       .map((target) => target.name);
     //console.log(target);
     const confirm = window.confirm(`Delete ${targetName}?`);
@@ -149,7 +149,7 @@ const Persons = ({ persons, setPersons, search }) => {
             <div key={idx}>
               {person.name} {person.number}
               <button
-                value={person._id}
+                value={person.id}
                 name={person.name}
                 onClick={onClick}
                 className="button"

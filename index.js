@@ -50,13 +50,13 @@ app.get("/api/persons", (req, res, next) => {
 
 app.delete("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
-  PersonModel.findByIdAndRemove(id)
-    .then(() => {
-      res.status(204).end();
+  PersonModel.findById({ _id: id })
+    .then((person) => {
+      person.remove();
+      res.status(204).json({ message: `${id} deleted` });
     })
-    .catch((error) => {
+    .catch((err) => {
       console.log(err.message);
-      next(error);
     });
 });
 
