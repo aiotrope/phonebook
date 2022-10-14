@@ -52,11 +52,13 @@ app.delete("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
   PersonModel.findById({ _id: id })
     .then((person) => {
+      if (!person) next();
       person.remove();
       res.status(204).json({ message: `${id} deleted` });
     })
     .catch((err) => {
       console.log(err.message);
+      next(err);
     });
 });
 
@@ -85,19 +87,54 @@ app.post("/api/persons", (req, res, next) => {
   }
 });
 
+app.put("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  const number = req.body.number;
+
+  const update = {
+    _id: id,
+    name: name,
+    number: number,
+  };
+
+  PersonModel.findOneAndUpdate({ name: name }, update, { new: true })
+    .then((updateEntry) => {
+      if (!updateEntry) next();
+      res.status(200).json({ update_person: updateEntry });
+    })
+    .catch((error) => next(error));
+});
+
+app.get("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  PersonModel.findOne({ _id: id })
+    .then((person) => {
+      if (person) {
+        res.status(200).json({ person: person });
+      } else {
+        next();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      next(error);
+    });
+});
+
 const notFoundEndpoint = (req, res) => {
   res.status(404).send({ error: "endpoint not found" });
 };
 
 app.use(notFoundEndpoint);
 
-const errorHandler = (err, req, res, next) => {
-  console.log(err.message);
-  console.error(err.stack);
-  res.status(500);
-  res.send("error", { error: err });
+const errorHandler = (error, req, res, next) => {
+  console.log(error.message);
+  if (error.name === "CastError") {
+    return res.status(404).json({ error: error });
+  }
 
-  next(err);
+  next(error);
 };
 
 app.use(errorHandler);
