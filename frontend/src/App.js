@@ -157,8 +157,6 @@ const PersonForm = ({
         });
     } else {
       // post new entries on the backend
-      const namesArr = persons.map((e) => e.name);
-      const haveMatch = namesArr.includes(newName);
       const newEntry = { name: newName, number: newNumber };
 
       personsService
@@ -181,16 +179,20 @@ const PersonForm = ({
           console.log(err.response);
           setErrorMsg(err.response.data.error);
           let timer;
+          clearTimeout(timer);
           timer = setTimeout(() => {
             setErrorMsg(null);
           }, 6000);
+          setCount((c) => c + 1);
 
           if (err.response.status === 500) {
             setErrorMsg(err.response.data.error);
             let timer;
+            clearTimeout(timer);
             timer = setTimeout(() => {
               setErrorMsg(null);
             }, 6000);
+            setCount((c) => c + 1);
           }
         });
     }
