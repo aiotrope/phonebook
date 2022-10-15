@@ -62,29 +62,25 @@ app.delete("/api/persons/:id", (req, res, next) => {
     });
 });
 
+//let error;
+
 app.post("/api/persons", (req, res, next) => {
   const { name, number } = req.body;
-  if (!name) {
-    return res
-      .status(400)
-      .json({ error: `name field is required - HTTP ${res.statusCode}` });
-  } else if (!number) {
-    return res
-      .status(400)
-      .json({ error: `number field is required - HTTP ${res.statusCode}` });
-  } else {
-    const person = new PersonModel({
-      name: req.body.name,
-      number: req.body.number,
+
+  const person = new PersonModel({
+    name: name,
+    number: number,
+  });
+
+  person
+    .save()
+    .then((newPerson) => {
+      console.log(newPerson);
+      res.status(201).json({ new_person: newPerson });
+    })
+    .catch((err) => {
+      next(err);
     });
-    person
-      .save()
-      .then((newPerson) => {
-        console.log(newPerson);
-        res.status(201).json({ new_person: newPerson });
-      })
-      .catch((error) => next(error));
-  }
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
@@ -98,7 +94,9 @@ app.put("/api/persons/:id", (req, res, next) => {
     number: number,
   };
 
-  PersonModel.findOneAndUpdate({ name: name }, update, { new: true })
+  const opts = { new: true, runValidators: true, context: "query" };
+
+  PersonModel.findOneAndUpdate({ name: name }, update, opts)
     .then((updateEntry) => {
       if (!updateEntry) next();
       res.status(200).json({ update_person: updateEntry });
@@ -149,8 +147,15 @@ app.use(notFoundEndpoint);
 
 const errorHandler = (error, req, res, next) => {
   console.log(error.message);
+
   if (error.name === "CastError") {
-    return res.status(404).json({ error: error });
+    return res.status(404).json({ error: error.message });
+  } else if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
+  } else if (error.name === "MongoServerError") {
+    return res
+      .status(500)
+      .json({ error: `Duplicate name error: ${req.body.name}!` });
   }
 
   next(error);
