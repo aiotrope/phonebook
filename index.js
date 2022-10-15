@@ -157,7 +157,6 @@ const errorHandler = (error, req, res, next) => {
       .status(500)
       .json({ error: `Duplicate name error: ${req.body.name}!` })
   }
-
   next(error)
 }
 
