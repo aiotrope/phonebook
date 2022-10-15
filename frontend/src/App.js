@@ -58,7 +58,7 @@ const Persons = ({ persons, search, setCount, setErrorMsg }) => {
             <div key={idx}>
               {person.name} {person.number}
               <button
-                value={person._id}
+                value={person.id}
                 name={person.name}
                 onClick={onClick}
                 className="button"
@@ -105,7 +105,7 @@ const PersonForm = ({
     } else if (haveMatch) {
       const targetId = persons
         .filter((p) => p.name === newName)
-        .map((p) => p._id);
+        .map((p) => p.id);
 
       const updatedEntry = { name: newName, number: newNumber };
 
@@ -140,7 +140,7 @@ const PersonForm = ({
           }, 6000);
           setCount((c) => c + 1);
           console.log(err.message);
-          setPersons(persons.filter((p) => p._id !== targetId));
+          setPersons(persons.filter((p) => p.id !== targetId));
         });
     } else if (newNumber.length === 0) {
       alert("You forgot to enter your phone number!");
@@ -151,7 +151,7 @@ const PersonForm = ({
       personsService
         .create(newEntry)
         .then((response) => {
-          console.log(response.status);
+          console.log(response);
           setPersons(persons.concat(newEntry));
           if (response.status === 201) {
             setSuccessMsg(`Added ${newName}`);

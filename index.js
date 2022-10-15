@@ -106,12 +106,31 @@ app.put("/api/persons/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
+app.get("/info", (req, res, next) => {
+  PersonModel.countDocuments()
+    .then((count) => {
+      res
+        .status(200)
+        .send(`<p>Phonebook has info for ${count} people</p>${new Date()}`);
+    })
+    .catch((err) => next(err));
+});
+
 app.get("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
   PersonModel.findOne({ _id: id })
     .then((person) => {
       if (person) {
-        res.status(200).json({ person: person });
+        const obj = `
+        {
+          <br />
+          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0name:\u00A0\u00A0<span style="color: green;">"${person["name"]}"</span>, <br />
+          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0number:\u00A0\u00A0<span style="color: green;">"${person["number"]}"</span>, <br />
+          \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0id:\u00A0\u00A0<span style="color: green;">"${person["id"]}"</span> <br />
+        }
+        
+        `;
+        res.status(200).send(obj);
       } else {
         next();
       }
