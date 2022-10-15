@@ -100,9 +100,7 @@ const PersonForm = ({
     const namesArr = persons.map((e) => e.name);
     const haveMatch = namesArr.includes(newName);
 
-    if (newName.length === 0) {
-      alert("You forgot to enter your name!");
-    } else if (haveMatch) {
+    if (haveMatch) {
       const targetId = persons
         .filter((p) => p.name === newName)
         .map((p) => p.id);
@@ -114,7 +112,11 @@ const PersonForm = ({
         .then((response) => {
           console.log(response);
 
-          if (response.data.update_person !== null) {
+          if (
+            response.data.update_person !== null &&
+            newNumber !== null &&
+            newNumber !== undefined
+          ) {
             const confirm = window.confirm(
               `${newName} is already added to phonebook, replace the old number with a new one?`
             );
@@ -130,20 +132,29 @@ const PersonForm = ({
           }
         })
         .catch((err) => {
-          setErrorMsg(
-            `Information of ${newName} has already been removed from server`
-          );
-          let timer;
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            setErrorMsg(null);
-          }, 6000);
-          setCount((c) => c + 1);
-          console.log(err.message);
+          if (err.response.status === 404) {
+            setErrorMsg(
+              `Information of ${newName} has already been removed from server`
+            );
+            let timer;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              setErrorMsg(null);
+            }, 6000);
+            setCount((c) => c + 1);
+          } else if (err.response.status === 400) {
+            setErrorMsg(err.response.data.error);
+            let timer;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              setErrorMsg(null);
+            }, 6000);
+            setCount((c) => c + 1);
+          }
+
+          console.log(err.response);
           setPersons(persons.filter((p) => p.id !== targetId));
         });
-    } else if (newNumber.length === 0) {
-      alert("You forgot to enter your phone number!");
     } else {
       // post new entries on the backend
       const newEntry = { name: newName, number: newNumber };
@@ -151,7 +162,8 @@ const PersonForm = ({
       personsService
         .create(newEntry)
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
+
           setPersons(persons.concat(newEntry));
           if (response.status === 201) {
             setSuccessMsg(`Added ${newName}`);
@@ -164,9 +176,23 @@ const PersonForm = ({
           }
         })
         .catch((err) => {
-          if (err.response) {
-            //console.log(error.response.statusText)
-            console.log(err.message);
+          console.log(err.response);
+          setErrorMsg(err.response.data.error);
+          let timer;
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            setErrorMsg(null);
+          }, 6000);
+          setCount((c) => c + 1);
+
+          if (err.response.status === 500) {
+            setErrorMsg(err.response.data.error);
+            let timer;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              setErrorMsg(null);
+            }, 6000);
+            setCount((c) => c + 1);
           }
         });
     }
