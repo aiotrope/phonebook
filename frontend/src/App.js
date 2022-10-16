@@ -18,35 +18,56 @@ const Filter = ({ search, setSearch }) => {
   );
 };
 
-const Persons = ({ persons, search, setCount, setErrorMsg }) => {
+const DeleteButton = ({
+  id,
+  setPersons,
+  targetName,
+  setCount,
+  setErrorMsg,
+  persons,
+}) => {
   const onClick = (event) => {
     const target = event.target.value;
-    const targetName = event.target.name;
 
-    personsService
-      .omit(target)
-      .then((response) => {
-        if (response.data.message !== null) {
-          const confirm = window.confirm(`Delete ${targetName}?`);
-          if (confirm) {
-            setCount((c) => c + 1);
-          }
-        }
-      })
-      .catch((e) => {
-        console.log(e.message);
-        setErrorMsg(
-          `Information of ${targetName} has already been removed from server`
-        );
-        let timer;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          setErrorMsg(null);
-        }, 6000);
-        setCount((c) => c + 1);
-      });
+    const confirm = window.confirm(`Delete ${targetName}?`);
+
+    if (confirm) {
+      personsService
+        .omit(target)
+        .then((response) => {
+          console.log(response);
+          setCount((c) => c + 1);
+          setPersons(persons.filter((p) => p.id !== target));
+        })
+        .catch((err) => {
+          console.log(err.response.data.error);
+          if (err.response.data)
+            setErrorMsg(
+              `Information of ${targetName} has already been removed from server`
+            );
+          let timer;
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            setErrorMsg(null);
+          }, 6000);
+          setCount((c) => c + 1);
+          setPersons(persons.filter((p) => p.id !== target));
+        });
+    } else {
+      setCount((c) => c + 1);
+    }
   };
 
+  return (
+    <>
+      <button value={id} name={targetName} onClick={onClick} className="button">
+        delete
+      </button>
+    </>
+  );
+};
+
+const Persons = ({ persons, search, setCount, setErrorMsg, setPersons }) => {
   return (
     <>
       {persons
@@ -57,14 +78,14 @@ const Persons = ({ persons, search, setCount, setErrorMsg }) => {
           return (
             <div key={idx}>
               {person.name} {person.number}
-              <button
-                value={person.id}
-                name={person.name}
-                onClick={onClick}
-                className="button"
-              >
-                delete
-              </button>
+              <DeleteButton
+                id={person.id}
+                targetName={person.name}
+                persons={persons}
+                setPersons={setPersons}
+                setCount={setCount}
+                setErrorMsg={setErrorMsg}
+              />
             </div>
           );
         })}
@@ -105,56 +126,51 @@ const PersonForm = ({
         .filter((p) => p.name === newName)
         .map((p) => p.id);
 
-      const updatedEntry = { name: newName, number: newNumber };
-
-      personsService
-        .update(targetId, updatedEntry)
-        .then((response) => {
-          console.log(response);
-
-          if (
-            response.data.update_person !== null &&
-            newNumber !== null &&
-            newNumber !== undefined
-          ) {
-            const confirm = window.confirm(
-              `${newName} is already added to phonebook, replace the old number with a new one?`
-            );
-
-            if (confirm) {
+      if (newNumber !== null && newNumber !== undefined) {
+        const confirm = window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        );
+        if (confirm) {
+          const updatedEntry = { name: newName, number: newNumber };
+          personsService
+            .update(targetId, updatedEntry)
+            .then((response) => {
+              console.log(response);
               setPersons(persons.concat(updatedEntry));
               setSuccessMsg(`${newName}'s updated phone number: ${newNumber}`);
               setCount((c) => c + 1);
               setTimeout(() => {
                 setSuccessMsg(null);
               }, 5000);
-            }
-          }
-        })
-        .catch((err) => {
-          if (err.response.status === 404) {
-            setErrorMsg(
-              `Information of ${newName} has already been removed from server`
-            );
-            let timer;
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-              setErrorMsg(null);
-            }, 6000);
-            setCount((c) => c + 1);
-          } else if (err.response.status === 400) {
-            setErrorMsg(err.response.data.error);
-            let timer;
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-              setErrorMsg(null);
-            }, 6000);
-            setCount((c) => c + 1);
-          }
+            })
+            .catch((err) => {
+              if (err.response.status === 404) {
+                setErrorMsg(
+                  `Information of ${newName} has already been removed from server`
+                );
+                let timer;
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                  setErrorMsg(null);
+                }, 6000);
+                setCount((c) => c + 1);
+              } else if (err.response.status === 400) {
+                setErrorMsg(err.response.data.error);
+                let timer;
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                  setErrorMsg(null);
+                }, 6000);
+                setCount((c) => c + 1);
+              }
 
-          console.log(err.response);
-          setPersons(persons.filter((p) => p.id !== targetId));
-        });
+              console.log(err.response);
+              setPersons(persons.filter((p) => p.id !== targetId));
+            });
+        } else {
+          setCount((c) => c + 1);
+        }
+      }
     } else {
       // post new entries on the backend
       const newEntry = { name: newName, number: newNumber };
@@ -282,6 +298,7 @@ const App = () => {
         search={search}
         setCount={setCount}
         setErrorMsg={setErrorMsg}
+        setPersons={setPersons}
       />
     </div>
   );
