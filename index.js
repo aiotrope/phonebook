@@ -8,7 +8,9 @@ const app = express()
 
 app.use(express.json())
 
-logger.token('reqBody', (req) => JSON.stringify(req.body))
+logger.token('reqBody', (req) => {
+  return JSON.stringify(req.body)
+})
 
 app.use(
   logger(function (tokens, req, res) {
@@ -50,11 +52,13 @@ app.get('/api/persons', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
-  PersonModel.findById({ _id: id })
+  PersonModel.findByIdAndDelete(id)
     .then((person) => {
-      if (!person) next()
-      person.remove()
-      res.status(204).json({ message: `${id} deleted` })
+      if (!person) {
+        next()
+      } else {
+        return res.status(200).json({ message: `${id} deleted` })
+      }
     })
     .catch((err) => {
       console.log(err.message)
@@ -153,10 +157,11 @@ const errorHandler = (error, req, res, next) => {
   } else if (error.name === 'ValidationError') {
     return res.status(400).json({ error: error.message })
   } else if (error.name === 'MongoServerError') {
-    return res
-      .status(500)
-      .json({ error: `Duplicate name error: ${req.body.name}!` })
+    return res.status(500).json({
+      error: `Duplicate name error: ${req.body.name} was already saved!`,
+    })
   }
+
   next(error)
 }
 
